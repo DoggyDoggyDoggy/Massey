@@ -1,0 +1,14 @@
+body {
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    height: 100vh; /* Full height of the viewport */
+    margin: 0; /* Remove default margin */
+}
+
+.container {
+    display: flex;
+    flex-direction: column; /* Arrange children in a column */
+    align-items: center; /* Align items in the center horizontally */
+    justify-content: center; /* Align items in the center vertically */
+}
