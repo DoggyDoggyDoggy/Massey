@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Main page</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.0/socket.io.min.js"></script>
+    <script>
+        var socket = io.connect('http://' + document.domain + ':' + location.port);
+
+        socket.on('update_temperature', function(data) {
+            document.getElementById("temperature").innerText = "Temperature: " + (data.temperature !== null ? data.temperature : "No data available");
+        });
+
+        window.onload = function() {
+            socket.emit('connect');
+        };
+    </script>
+</head>
+<body>
+<h1>Sensor</h1>
+<p id="temperature">Temperature: No data available</p>
+</body>
+</html>
