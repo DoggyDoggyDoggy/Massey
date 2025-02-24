@@ -6,7 +6,7 @@ url = 'http://127.0.0.1:5000/api/data'
 
 # Post request
 data = {
-    'temperature': 6,
+    'temperature': 123,
     'humidity': 95,
     'available': True
 }

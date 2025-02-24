@@ -61,7 +61,9 @@ def handle_internal_server_error(e):
 
 @socketio.on('connect')
 def handle_connect():
-    if current_temperature is not None:
+    if not sensor_available:
+        socketio.emit('sensor_unavailable')
+    elif current_temperature is not None:
         socketio.emit('update_temperature', {'temperature': current_temperature, 'humidity': current_humidity})
 
 
