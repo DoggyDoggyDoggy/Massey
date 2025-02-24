@@ -5,6 +5,15 @@ socket.on('update_temperature', function(data) {
     document.getElementById("humidity").innerText = "Humidity: " + (data.humidity !== null ? data.humidity : "No data available")
 })
 
+socket.on('sensor_unavailable', function(data) {
+    document.body.innerHTML = `
+        <div class="container">
+            <h1>500 - Internal Server Error</h1>
+            <p>The sensor is currently unavailable. Please try again later.</p>
+        </div>
+    `
+})
+
 window.onload = function() {
     socket.emit('connect')
 }
