@@ -6,8 +6,8 @@ url = "https://denoggy.pythonanywhere.com/api/data"
 
 # Post request
 data = {
-    'temperature': 65,
-    'humidity': 95
+    'temperature': 6,
+    'humidity': 96
 }
 
 # Sending a POST request with JSON data

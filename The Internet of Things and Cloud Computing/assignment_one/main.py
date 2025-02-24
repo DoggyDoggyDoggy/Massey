@@ -5,11 +5,13 @@ app = Flask(__name__)
 socketio = SocketIO(app)
 
 current_temperature = None
+current_humidity = None
 
 
 @app.route('/api/data', methods = ['POST'])
 def receive_data():
     global current_temperature
+    global current_humidity
 
     if request.is_json:
         data = request.get_json()
@@ -17,6 +19,7 @@ def receive_data():
         humidity = data.get('humidity')
 
         current_temperature = temperature
+        current_humidity = humidity
 
         if temperature is None or humidity is None:
             return jsonify({'error': 'Temperature and humidity are required'}), 400
@@ -27,7 +30,7 @@ def receive_data():
             'humidity': humidity
         }
 
-        socketio.emit('update_temperature', {'temperature': temperature})
+        socketio.emit('update_temperature', {'temperature': temperature, 'humidity': humidity})
 
         return jsonify(response), 200
     else:
@@ -36,13 +39,13 @@ def receive_data():
 
 @app.route('/')
 def home():
-    return render_template('main.html', temperature = current_temperature)
+    return render_template('main.html', temperature = current_temperature, humidity = current_humidity)
 
 
 @socketio.on('connect')
 def handle_connect():
     if current_temperature is not None:
-        socketio.emit('update_temperature', {'temperature': current_temperature})
+        socketio.emit('update_temperature', {'temperature': current_temperature, 'humidity': current_humidity})
 
 
 if __name__ == '__main__':
