@@ -7,13 +7,14 @@ socketio = SocketIO(app)
 current_temperature = None
 current_humidity = None
 sensor_available = True
-
+data_error = False
 
 @app.route('/api/data', methods = ['POST'])
 def receive_data():
     global current_temperature
     global current_humidity
     global sensor_available
+    global data_error
 
     if request.is_json:
         data = request.get_json()
@@ -29,9 +30,20 @@ def receive_data():
         if temperature is None or humidity is None:
             return jsonify({'error': 'Temperature and humidity are required'}), 400
 
+        if humidity > 100 or humidity < 0:
+            data_error = True
+            socketio.emit('sensor_unavailable')
+            return jsonify({'error': 'Humidity range from 0 to 100'}), 500
+
+        if temperature > 100 or temperature < -100:
+            data_error = True
+            socketio.emit('sensor_unavailable')
+            return jsonify({'error': 'Temperatures range from -100°C to 100°C'}), 500
+
         current_temperature = temperature
         current_humidity = humidity
         sensor_available = True
+        data_error = False
 
         response = {
             'message': 'Data received successfully',
@@ -48,7 +60,7 @@ def receive_data():
 
 @app.route('/')
 def home():
-    if not sensor_available:
+    if not sensor_available or data_error:
         abort(500)
 
     return render_template('main.html', temperature = current_temperature, humidity = current_humidity)
