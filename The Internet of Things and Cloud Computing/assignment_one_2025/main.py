@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, send_from_directory
+from flask import Flask, jsonify, send_from_directory,render_template
 from sense_emu import SenseHat
 import os
 
@@ -24,8 +24,7 @@ def get_temperature():
 
 @app.route('/')
 def home():
-    return send_from_directory(os.getcwd(), 'HTMLEmuData.html')
+    return render_template('HTMLEmuData.html')
 
 if __name__ == '__main__':
-    app.run(debug = True)
-
+    app.run(debug = True, port = 5001)
