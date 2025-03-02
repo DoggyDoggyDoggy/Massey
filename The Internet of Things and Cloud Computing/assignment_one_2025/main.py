@@ -1,10 +1,32 @@
 from flask import Flask, jsonify, render_template
 from sense_emu import SenseHat
+from flask_sqlalchemy import SQLAlchemy
+import datetime
 
 app = Flask(__name__)
 sense = SenseHat()
 
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///sensor_data.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+db = SQLAlchemy(app)
+
 warnings = []
+
+
+class SensorData(db.Model):
+    id = db.Column(db.Integer, primary_key = True)
+    timestamp = db.Column(db.DateTime, default = datetime.datetime.utcnow)
+    temperature = db.Column(db.Float, nullable = False)
+    humidity = db.Column(db.Float, nullable = False)
+    pressure = db.Column(db.Float, nullable = False)
+
+    def __repr__(self):
+        return f'<SensorData {self.id}>'
+
+
+with app.app_context():
+    db.create_all()
 
 
 def check_data(temperature, humidity, pressure):
@@ -54,6 +76,14 @@ def get_temperature():
 
         if not (-12 <= temperature <= 50):
             raise ValueError("Received implausible data values.")
+
+        sensor_data = SensorData(
+            temperature = temperature,
+            humidity = humidity,
+            pressure = pressure
+        )
+        db.session.add(sensor_data)
+        db.session.commit()
 
         return jsonify(temperature = temperature, humidity = humidity, pressure = pressure, warnings = warnings)
     except Exception as e:
