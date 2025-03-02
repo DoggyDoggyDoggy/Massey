@@ -9,6 +9,7 @@ def get_temperature():
     try:
         temperature = sense.get_temperature()
         humidity = sense.get_humidity()
+        pressure = sense.get_pressure()
 
         warnings = []
 
@@ -19,7 +20,7 @@ def get_temperature():
             warnings.append("High Temp!")
             sense.show_message("High Temp!", text_colour=[255, 0, 0])
 
-        return jsonify(temperature=temperature, humidity = humidity, warnings=warnings)
+        return jsonify(temperature=temperature, humidity = humidity, pressure = pressure, warnings=warnings)
     except Exception as e:
         return jsonify(error=str(e)), 500
 
