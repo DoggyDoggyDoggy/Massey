@@ -1,10 +1,14 @@
 function updateTemperatureDisplay(data) {
   // Fetch elements by their IDs to display temperature and warnings
   const tempDisplay = document.getElementById('temperature');
+  const humidityDisplay = document.getElementById('humidity');
   const warningDisplay = document.getElementById('temp-warning');
+
   // Update text content of temperature display with the data received
   tempDisplay.textContent = `Current temperature: ${data.temperature}`;
+  humidityDisplay.textContent = `Current humidity: ${data.humidity}`;
   warningDisplay.innerHTML = ''; // Clear any previous warnings
+
   // Check if there are any warnings in the data and display them
   if (data.warnings.length > 0) {
     data.warnings.forEach(function(warning) {
@@ -25,6 +29,7 @@ function fetchTemperatureData() {
       // Log and display error if fetching temperature data fails
       console.error('Error fetching temperature:', error);
       document.getElementById('temperature').textContent = "Error loading data!";
+      document.getElementById('humidity').textContent = "Error loading data!";
       document.getElementById('temp-warning').innerHTML = ''; // Clear any previous warnings
     });
 }

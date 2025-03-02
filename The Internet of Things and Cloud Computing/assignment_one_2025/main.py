@@ -1,6 +1,5 @@
-from flask import Flask, jsonify, send_from_directory,render_template
+from flask import Flask, jsonify,render_template
 from sense_emu import SenseHat
-import os
 
 app = Flask(__name__)
 sense = SenseHat()
@@ -9,16 +8,18 @@ sense = SenseHat()
 def get_temperature():
     try:
         temperature = sense.get_temperature()
+        humidity = sense.get_humidity()
+
         warnings = []
 
         if not (0 <= temperature <= 50):
             raise ValueError("Received implausible data values.")
 
-        if temperature > 40:
+        if temperature > 40 or temperature < 0:
             warnings.append("High Temp!")
             sense.show_message("High Temp!", text_colour=[255, 0, 0])
 
-        return jsonify(temperature=temperature, warnings=warnings)
+        return jsonify(temperature=temperature, humidity = humidity, warnings=warnings)
     except Exception as e:
         return jsonify(error=str(e)), 500
 
