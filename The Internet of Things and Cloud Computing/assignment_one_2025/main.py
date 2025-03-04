@@ -90,6 +90,24 @@ def get_temperature():
         return jsonify(error = str(e)), 500
 
 
+@app.route('/api/historical-data')
+def historical_data():
+    sensor_records = SensorData.query.order_by(SensorData.timestamp).all()
+    data = [
+        {
+            "timestamp": record.timestamp.isoformat(),
+            "temperature": record.temperature
+        }
+        for record in sensor_records
+    ]
+    return jsonify(data = data)
+
+
+@app.route('/historical')
+def historical():
+    return render_template('historical.html')
+
+
 @app.route('/')
 def home():
     return render_template('HTMLEmuData.html')
