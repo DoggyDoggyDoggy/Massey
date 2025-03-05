@@ -82,6 +82,20 @@ def data_validation_from_user(data):
         raise ValueError("Pressure  available range from 260 to 1260")
 
 
+def detect_spike(current_temperature):
+    previous_record = SensorData.query.order_by(SensorData.timestamp.desc()).first()
+    if previous_record:
+        diff = current_temperature - previous_record.temperature
+        spike_threshold = 5.0
+        if abs(diff) >= spike_threshold:
+            if diff > 0:
+                sense.show_message("Sudden spike detected!", text_colour = [255, 0, 0])
+                warnings.append("Sudden spike detected!")
+            else:
+                sense.show_message("Sudden drop detected!", text_colour = [255, 0, 0])
+                warnings.append("Sudden drop detected!")
+
+
 @app.route('/temperature')
 def get_temperature():
     global warnings
@@ -95,6 +109,8 @@ def get_temperature():
         data_validation_from_sensor(temperature, humidity, pressure)
 
         check_data(temperature, humidity, pressure)
+
+        detect_spike(temperature)
 
         sensor_data = SensorData(
             temperature = temperature,
