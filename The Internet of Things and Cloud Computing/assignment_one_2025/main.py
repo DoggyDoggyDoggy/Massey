@@ -73,6 +73,15 @@ def data_validation_from_sensor(temperature, humidity, pressure):
         raise ValueError("Received implausible data values. Available range from 260 to 1260")
 
 
+def data_validation_from_user(data):
+    if data.get("temp_min") <= -35 or data.get("temp_max") >= 105:
+        raise ValueError("Temperature available range from -35 to 105")
+    elif data.get("hum_min") <= 0 or data.get("hum_max") >= 100:
+        raise ValueError("Humidity available range from 0 to 100")
+    elif data.get("pres_min") <= 260 or data.get("pres_max") >= 1260:
+        raise ValueError("Pressure  available range from 260 to 1260")
+
+
 @app.route('/temperature')
 def get_temperature():
     global warnings
@@ -122,6 +131,7 @@ def historical():
 def settings():
     if request.method == 'POST':
         try:
+            data_validation_from_user(request.form)
             thresholds["temperature"]["min"] = float(request.form.get("temp_min"))
             thresholds["temperature"]["max"] = float(request.form.get("temp_max"))
             thresholds["humidity"]["min"] = float(request.form.get("hum_min"))
@@ -129,7 +139,9 @@ def settings():
             thresholds["pressure"]["min"] = float(request.form.get("pres_min"))
             thresholds["pressure"]["max"] = float(request.form.get("pres_max"))
         except (TypeError, ValueError):
-            return "Wrong data", 400
+            return ("<p>Temperature available range from -35 to 105</p>"
+                    "<p>Humidity available range from 0 to 100</p>"
+                    "<p>Pressure  available range from 260 to 1260</p>"), 400
         return redirect(url_for('settings'))
     return render_template('settings.html', thresholds = thresholds)
 
