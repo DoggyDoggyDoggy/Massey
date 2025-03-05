@@ -1,7 +1,9 @@
-from flask import Flask, jsonify, render_template
+from flask import Flask, jsonify, render_template, request, redirect, url_for
 from sense_emu import SenseHat
 from flask_sqlalchemy import SQLAlchemy
 import datetime
+
+from config import thresholds
 
 app = Flask(__name__)
 sense = SenseHat()
@@ -36,30 +38,30 @@ def check_data(temperature, humidity, pressure):
 
 
 def check_temperature(temperature):
-    if temperature > 40:
+    if temperature > thresholds["temperature"]["max"]:
         warnings.append("High Temp!")
         sense.show_message("High Temp!", text_colour = [255, 0, 0])
-    elif temperature < -4:
+    elif temperature < thresholds["temperature"]["min"]:
         warnings.append("Low Temp!")
         sense.show_message("Low Temp!", text_colour = [255, 0, 0])
 
 
 def check_humidity(humidity):
-    if humidity > 90:
+    if humidity > thresholds["humidity"]["max"]:
         warnings.append("High Humidity!")
         sense.show_message("High Humidity!", text_colour = [255, 0, 0])
-    elif humidity < 10:
+    elif humidity < thresholds["humidity"]["min"]:
         warnings.append("Low Humidity!")
-        sense.show_message("High Humidity!", text_colour = [255, 0, 0])
+        sense.show_message("Low Humidity!", text_colour = [255, 0, 0])
 
 
 def check_pressure(pressure):
-    if pressure > 1030:
+    if pressure > thresholds["pressure"]["max"]:
         warnings.append("High Pressure!")
         sense.show_message("High Pressure!", text_colour = [255, 0, 0])
-    elif pressure < 970:
+    elif pressure < thresholds["pressure"]["min"]:
         warnings.append("Low Pressure!")
-        sense.show_message("High Pressure!", text_colour = [255, 0, 0])
+        sense.show_message("Low Pressure!", text_colour = [255, 0, 0])
 
 
 @app.route('/temperature')
@@ -106,6 +108,22 @@ def historical_data():
 @app.route('/historical')
 def historical():
     return render_template('historical.html')
+
+
+@app.route('/settings', methods = ['GET', 'POST'])
+def settings():
+    if request.method == 'POST':
+        try:
+            thresholds["temperature"]["min"] = float(request.form.get("temp_min"))
+            thresholds["temperature"]["max"] = float(request.form.get("temp_max"))
+            thresholds["humidity"]["min"] = float(request.form.get("hum_min"))
+            thresholds["humidity"]["max"] = float(request.form.get("hum_max"))
+            thresholds["pressure"]["min"] = float(request.form.get("pres_min"))
+            thresholds["pressure"]["max"] = float(request.form.get("pres_max"))
+        except (TypeError, ValueError):
+            return "Wrong data", 400
+        return redirect(url_for('settings'))
+    return render_template('settings.html', thresholds = thresholds)
 
 
 @app.route('/')

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Warning Setting</title>
+</head>
+<body>
+  <h1>Warning Setting</h1>
+  <form method="post">
+    <fieldset>
+      <legend>Temperature</legend>
+      <label for="temp_min">Minimum:</label>
+      <input type="number" step="0.1" id="temp_min" name="temp_min" value="{{ thresholds.temperature.min }}" required>
+      <label for="temp_max">Maximum:</label>
+      <input type="number" step="0.1" id="temp_max" name="temp_max" value="{{ thresholds.temperature.max }}" required>
+    </fieldset>
+
+    <fieldset>
+      <legend>Humidity</legend>
+      <label for="hum_min">Minimum:</label>
+      <input type="number" step="0.1" id="hum_min" name="hum_min" value="{{ thresholds.humidity.min }}" required>
+      <label for="hum_max">Maximum:</label>
+      <input type="number" step="0.1" id="hum_max" name="hum_max" value="{{ thresholds.humidity.max }}" required>
+    </fieldset>
+
+    <fieldset>
+      <legend>Pressure</legend>
+      <label for="pres_min">Minimum:</label>
+      <input type="number" step="0.1" id="pres_min" name="pres_min" value="{{ thresholds.pressure.min }}" required>
+      <label for="pres_max">Maximum:</label>
+      <input type="number" step="0.1" id="pres_max" name="pres_max" value="{{ thresholds.pressure.max }}" required>
+    </fieldset>
+
+    <button type="submit">Save setting</button>
+  </form>
+</body>
+</html>
