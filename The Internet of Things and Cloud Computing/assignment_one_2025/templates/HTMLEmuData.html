@@ -8,6 +8,11 @@
     <script src="{{ url_for('static', filename='script.js') }}"></script>
   </head>
   <body>
+    <nav>
+      <a href="{{ url_for('historical') }}">Historical Data</a>
+      <a href="{{ url_for('settings') }}">Settings</a>
+    </nav>
+
     <h1>Temperature</h1>
     <div id="temperature">Loading temperature...</div>
     <div id="humidity">Loading humidity...</div>
