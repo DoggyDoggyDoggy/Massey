@@ -64,6 +64,15 @@ def check_pressure(pressure):
         sense.show_message("Low Pressure!", text_colour = [255, 0, 0])
 
 
+def data_validation_from_sensor(temperature, humidity, pressure):
+    if not (-35 <= temperature <= 105):
+        raise ValueError("Received implausible data values. Available range from -35 to 105")
+    if not (0 <= humidity <= 100):
+        raise ValueError("Received implausible data values. Available range from 0 to 100")
+    if not (260 <= pressure <= 1260):
+        raise ValueError("Received implausible data values. Available range from 260 to 1260")
+
+
 @app.route('/temperature')
 def get_temperature():
     global warnings
@@ -74,10 +83,9 @@ def get_temperature():
 
         warnings = []
 
-        check_data(temperature, humidity, pressure)
+        data_validation_from_sensor(temperature, humidity, pressure)
 
-        if not (-12 <= temperature <= 50):
-            raise ValueError("Received implausible data values.")
+        check_data(temperature, humidity, pressure)
 
         sensor_data = SensorData(
             temperature = temperature,
