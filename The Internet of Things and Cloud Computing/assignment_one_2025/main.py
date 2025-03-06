@@ -105,12 +105,13 @@ def detect_trend():
 
     records.reverse()
 
-    if all(records[i + 1].temperature > records[i].temperature for i in range(len(records) - 1)):
+    if all(records[i + 1].temperature >= records[i].temperature for i in range(len(records) - 1)):
         trend = "Consistent upward trend in temperature!"
 
-    elif all(records[i + 1].temperature < records[i].temperature for i in range(len(records) - 1)):
+    elif all(records[i + 1].temperature <= records[i].temperature for i in range(len(records) - 1)):
         trend = "Consistent downward trend in temperature!"
-
+    else:
+        trend = ""
 
 @app.route('/temperature')
 def get_temperature():

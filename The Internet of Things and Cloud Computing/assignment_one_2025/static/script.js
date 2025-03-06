@@ -1,23 +1,26 @@
 function updateTemperatureDisplay(data) {
-  // Fetch elements by their IDs to display temperature and warnings
   const tempDisplay = document.getElementById('temperature');
   const humidityDisplay = document.getElementById('humidity');
   const pressureDisplay = document.getElementById('pressure');
   const warningDisplay = document.getElementById('temp-warning');
   const trendDisplay = document.getElementById('trend');
 
-  // Update text content of temperature display with the data received
   tempDisplay.textContent = `Current temperature: ${data.temperature}`;
   humidityDisplay.textContent = `Current humidity: ${data.humidity}`;
-  pressureDisplay.textContent = `Current humidity: ${data.pressure}`;
-  warningDisplay.innerHTML = ''; // Clear any previous warnings
+  pressureDisplay.textContent = `Current pressure: ${data.pressure}`;
   trendDisplay.textContent = `${data.trend}`;
 
-  // Check if there are any warnings in the data and display them
   if (data.warnings.length > 0) {
+    warningDisplay.innerHTML = '';
     data.warnings.forEach(function(warning) {
-      // Append warnings in red color to the warning display element
-      warningDisplay.innerHTML += `<div style="color: red;"><strong>${warning}</strong></div>`;
+      const warningElement = document.createElement('div');
+      warningElement.style.color = 'red';
+      warningElement.innerHTML = `<strong>${warning}</strong>`;
+      warningDisplay.appendChild(warningElement);
+
+      setTimeout(() => {
+        warningElement.remove();
+      }, 10000);
     });
   }
 }
