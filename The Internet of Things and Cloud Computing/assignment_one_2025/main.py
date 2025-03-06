@@ -104,14 +104,28 @@ def detect_trend():
         return
 
     records.reverse()
+    deltas = [records[i + 1].temperature - records[i].temperature for i in range(len(records) - 1)]
+    avg_delta = sum(deltas) / len(deltas)
 
-    if all(records[i + 1].temperature >= records[i].temperature for i in range(len(records) - 1)):
+    if all(d >= 0 for d in deltas):
         trend = "Consistent upward trend in temperature!"
+        if avg_delta > 0:
+            remaining = thresholds["temperature"]["max"] - records[-1].temperature
+            if remaining > 0:
+                time_to_threshold = remaining / avg_delta
+                trend += f" Estimated time to reach max threshold: {time_to_threshold:.2f} units."
 
-    elif all(records[i + 1].temperature <= records[i].temperature for i in range(len(records) - 1)):
+    elif all(d <= 0 for d in deltas):
         trend = "Consistent downward trend in temperature!"
+        if avg_delta < 0:
+            remaining = records[-1].temperature - thresholds["temperature"]["min"]
+            if remaining > 0:
+                time_to_threshold = remaining / abs(avg_delta)
+                trend += f" Estimated time to reach min threshold: {time_to_threshold:.2f} units."
+
     else:
         trend = ""
+
 
 @app.route('/temperature')
 def get_temperature():
