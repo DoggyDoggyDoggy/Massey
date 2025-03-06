@@ -4,12 +4,14 @@ function updateTemperatureDisplay(data) {
   const humidityDisplay = document.getElementById('humidity');
   const pressureDisplay = document.getElementById('pressure');
   const warningDisplay = document.getElementById('temp-warning');
+  const trendDisplay = document.getElementById('trend');
 
   // Update text content of temperature display with the data received
   tempDisplay.textContent = `Current temperature: ${data.temperature}`;
   humidityDisplay.textContent = `Current humidity: ${data.humidity}`;
   pressureDisplay.textContent = `Current humidity: ${data.pressure}`;
   warningDisplay.innerHTML = ''; // Clear any previous warnings
+  trendDisplay.textContent = `${data.trend}`;
 
   // Check if there are any warnings in the data and display them
   if (data.warnings.length > 0) {

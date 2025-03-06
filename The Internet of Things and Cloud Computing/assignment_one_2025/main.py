@@ -14,6 +14,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
 warnings = []
+trend = ""
 
 
 class SensorData(db.Model):
@@ -96,9 +97,25 @@ def detect_spike(current_temperature):
                 warnings.append("Sudden drop detected!")
 
 
+def detect_trend():
+    global trend
+    records = SensorData.query.order_by(SensorData.timestamp.desc()).limit(5).all()
+    if len(records) < 5:
+        return
+
+    records.reverse()
+
+    if all(records[i + 1].temperature > records[i].temperature for i in range(len(records) - 1)):
+        trend = "Consistent upward trend in temperature!"
+
+    elif all(records[i + 1].temperature < records[i].temperature for i in range(len(records) - 1)):
+        trend = "Consistent downward trend in temperature!"
+
+
 @app.route('/temperature')
 def get_temperature():
     global warnings
+    global trend
     try:
         temperature = sense.get_temperature()
         humidity = sense.get_humidity()
@@ -120,7 +137,10 @@ def get_temperature():
         db.session.add(sensor_data)
         db.session.commit()
 
-        return jsonify(temperature = temperature, humidity = humidity, pressure = pressure, warnings = warnings)
+        detect_trend()
+
+        return jsonify(temperature = temperature, humidity = humidity,
+                       pressure = pressure, warnings = warnings, trend = trend)
     except Exception as e:
         return jsonify(error = str(e)), 500
 
