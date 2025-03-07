@@ -3,8 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <title>Historical Temperature</title>
+    <!-- Chart.js library for creating charts -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Moment.js library for date manipulation -->
     <script src="https://cdn.jsdelivr.net/npm/moment@2.29.1"></script>
+    <!-- Chart.js adapter to use Moment.js with Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-moment@1.0.0"></script>
 </head>
 <body>
@@ -13,60 +16,65 @@
     <a href="{{ url_for('settings') }}">Settings</a>
 </nav>
 <h1>Historical Temperature</h1>
+<!-- Canvas element where the temperature chart will be rendered -->
 <canvas id="tempChart" width="800" height="400"></canvas>
 <script>
+    // Fetch historical temperature data
     fetch('/api/historical-data')
         .then(response => response.json())
         .then(result => {
+            // converting each record's timestamp to a Date object
             const dataPoints = result.data.map(record => ({
                 x: new Date(record.timestamp),
                 y: record.temperature
             }));
 
+            // Drawing context
             const ctx = document.getElementById('tempChart').getContext('2d');
+
+            // Create a new line
             const tempChart = new Chart(ctx, {
-            type: 'line',
-            data: {
-                datasets: [{
-                    label: 'Temperature (°C)',
-                    data: dataPoints,
-                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                    borderColor: 'rgba(255, 99, 132, 1)',
-                    borderWidth: 1,
-                    tension: 0.1
-                }]
-            },
-            options: {
-                scales: {
-                    x: {
-                        type: 'time',
-                        offset: true,
-                        time: {
-                            unit: 'day',
-                            tooltipFormat: 'MMM DD, YYYY HH:mm'
+                type: 'line',  // Specify the chart type
+                data: {
+                    datasets: [{
+                        label: 'Temperature (°C)',
+                        data: dataPoints,
+                        backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                        borderColor: 'rgba(255, 99, 132, 1)',
+                        borderWidth: 1,
+                        tension: 0.1
+                    }]
+                },
+                options: {
+                    scales: {
+                        x: {
+                            type: 'time', // Define the x-axis as a time scale
+                            offset: true,
+                            time: {
+                                unit: 'day', // Group data by day
+                                tooltipFormat: 'MMM DD, YYYY HH:mm'
+                            },
+                            title: {
+                                display: true,
+                                text: 'Time' // Label for the x-axis
+                            },
+                            ticks: {
+                                autoSkip: true,
+                                maxTicksLimit: 31 // Maximum number of ticks on the x-axis
+                            }
                         },
-                        title: {
-                            display: true,
-                            text: 'Time'
-                        },
-                        ticks: {
-                            autoSkip: true,
-                            maxTicksLimit: 31
-                        }
-                    },
-                    y: {
-                        beginAtZero: false,
-                        title: {
-                            display: true,
-                            text: 'Temperature (°C)'
+                        y: {
+                            beginAtZero: false,
+                            title: {
+                                display: true,
+                                text: 'Temperature (°C)'
+                            }
                         }
                     }
-                   }
-                  }
-                });
+                }
+            });
         })
-        .catch(error => console.error('Error loading data:', error));
+        .catch(error => console.error('Error loading data:', error)); // Log errors
 </script>
 </body>
 </html>
-
