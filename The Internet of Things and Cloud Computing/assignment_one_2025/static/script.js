@@ -1,9 +1,7 @@
 //This script file were taken from the example that was shown in the second week
 // I expanded it to show humidity and air pressure.
-// The logic for displaying and deleting warnings was also reworked.
-//Now warnings are displayed for 10 seconds and are deleted by themselves.
-//This was done to avoid a bug with flickering when parsing a new date.
 // The trend variable has been added
+
 function updateTemperatureDisplay(data) {
   const tempDisplay = document.getElementById('temperature');
   const humidityDisplay = document.getElementById('humidity');
@@ -15,18 +13,11 @@ function updateTemperatureDisplay(data) {
   humidityDisplay.textContent = `Current humidity: ${data.humidity}`;
   pressureDisplay.textContent = `Current pressure: ${data.pressure}`;
   trendDisplay.textContent = `${data.trend}`;
+  warningDisplay.innerHTML = '';
 
   if (data.warnings.length > 0) {
-    warningDisplay.innerHTML = '';
     data.warnings.forEach(function(warning) {
-      const warningElement = document.createElement('div');
-      warningElement.style.color = 'red';
-      warningElement.innerHTML = `<strong>${warning}</strong>`;
-      warningDisplay.appendChild(warningElement);
-
-      setTimeout(() => {
-        warningElement.remove();
-      }, 10000);
+     warningDisplay.innerHTML +=  `<div style = 'color: red;'><strong>${warning}</strong></div>`;
     });
   }
 }
@@ -48,8 +39,8 @@ function fetchTemperatureData() {
     });
 }
 
-// Execute fetchTemperatureData when the page loads and set it to repeat every 1 seconds
+// Execute fetchTemperatureData when the page loads and set it to repeat every 5 seconds
 window.onload = function() {
   fetchTemperatureData(); // Fetch temperature data immediately on page load
-  setInterval(fetchTemperatureData, 1000); // Continuously fetch data every 1 seconds
+  setInterval(fetchTemperatureData, 5000); // Continuously fetch data every 5 seconds
 };

@@ -84,11 +84,11 @@ def data_validation_from_sensor(temperature, humidity, pressure):
 # Validation of data that the user can do on the Settings page.
 # The user cannot go beyond the limits that the emulator can do
 def data_validation_from_user(data):
-    if data.get("temp_min") <= -35 or data.get("temp_max") >= 105:
+    if float(data.get("temp_min")) < -35 or float(data.get("temp_max")) > 105:
         raise ValueError("Temperature available range from -35 to 105")
-    elif data.get("hum_min") <= 0 or data.get("hum_max") >= 100:
+    elif float(data.get("hum_min")) < 0 or float(data.get("hum_max")) > 100:
         raise ValueError("Humidity available range from 0 to 100")
-    elif data.get("pres_min") <= 260 or data.get("pres_max") >= 1260:
+    elif float(data.get("pres_min")) < 260 or float(data.get("pres_max")) > 1260:
         raise ValueError("Pressure  available range from 260 to 1260")
 
 
