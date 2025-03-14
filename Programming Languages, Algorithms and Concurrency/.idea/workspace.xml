@@ -4,10 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d2af005e-f5a1-4952-9141-6a7843460111" name="Changes" comment="extractWords">
-      <change afterPath="$PROJECT_DIR$/Assignment_one/src/utils/Utils.kt" afterDir="false" />
+    <list default="true" id="d2af005e-f5a1-4952-9141-6a7843460111" name="Changes" comment="Utils folder">
+      <change afterPath="$PROJECT_DIR$/Assignment_one/src/lexer/Lexer.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assignment_one/src/Main.kt" beforeDir="false" afterPath="$PROJECT_DIR$/Assignment_one/src/Main.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -56,8 +55,8 @@
     "last_opened_file_path": "E:/GitHub/Massey/Programming Languages, Algorithms and Concurrency",
     "onboarding.tips.debug.path": "E:/GitHub/Massey/Programming Languages, Algorithms and Concurrency/src/src/Main.kt",
     "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.0"
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2"
   }
 }]]></component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
@@ -101,7 +100,15 @@
       <option name="project" value="LOCAL" />
       <updated>1741954668246</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Utils folder">
+      <option name="closed" value="true" />
+      <created>1741955097105</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1741955097105</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -109,6 +116,7 @@
     <MESSAGE value="Header" />
     <MESSAGE value="Refactor" />
     <MESSAGE value="extractWords" />
-    <option name="LAST_COMMIT_MESSAGE" value="extractWords" />
+    <MESSAGE value="Utils folder" />
+    <option name="LAST_COMMIT_MESSAGE" value="Utils folder" />
   </component>
 </project>
