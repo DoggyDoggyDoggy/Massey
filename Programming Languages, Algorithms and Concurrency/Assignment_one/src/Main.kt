@@ -5,6 +5,12 @@ fun printHeader() {
     println("----------------------------------------")
 }
 
+// A function for extracting words from a string using a given pattern.
+fun extractWords(text: String): List<String> {
+    val regex = Regex("[A-Za-z0-9]+(?:['-][A-Za-z0-9]+)*")
+    return regex.findAll(text).map { it.value }.toList()
+}
+
 fun main() {
     printHeader()
 }
