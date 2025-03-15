@@ -1,3 +1,5 @@
+import lexer.lex
+import parser.Parser
 import utils.printHeader
 
 
@@ -16,8 +18,13 @@ fun main() {
             buffer = buffer.substring(index + 1)
             if (stmtText.isEmpty()) continue
             stmtText += ";"
-            println(stmtText)
+
+            try {
+                val tokens = lex(stmtText)
+                val parser = Parser(tokens)
+            } catch (e: Exception) {
+                println("Error: ${e.message}")
+            }
         }
-        break
     }
 }

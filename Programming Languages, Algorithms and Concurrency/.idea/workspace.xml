@@ -4,9 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d2af005e-f5a1-4952-9141-6a7843460111" name="Changes" comment="Parser draft">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    <list default="true" id="d2af005e-f5a1-4952-9141-6a7843460111" name="Changes" comment="User input">
       <change beforePath="$PROJECT_DIR$/Assignment_one/src/Main.kt" beforeDir="false" afterPath="$PROJECT_DIR$/Assignment_one/src/Main.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/src/META-INF/src.kotlin_module" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/src/META-INF/src.kotlin_module" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/src/MainKt.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/src/MainKt.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -150,7 +151,15 @@
       <option name="project" value="LOCAL" />
       <updated>1742001484593</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="User input">
+      <option name="closed" value="true" />
+      <created>1742009216955</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1742009216955</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -162,6 +171,7 @@
     <MESSAGE value="Data class for token" />
     <MESSAGE value="lex analysis function" />
     <MESSAGE value="Parser draft" />
-    <option name="LAST_COMMIT_MESSAGE" value="Parser draft" />
+    <MESSAGE value="User input" />
+    <option name="LAST_COMMIT_MESSAGE" value="User input" />
   </component>
 </project>
