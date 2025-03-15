@@ -4,10 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d2af005e-f5a1-4952-9141-6a7843460111" name="Changes" comment="User input">
-      <change beforePath="$PROJECT_DIR$/Assignment_one/src/Main.kt" beforeDir="false" afterPath="$PROJECT_DIR$/Assignment_one/src/Main.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/src/META-INF/src.kotlin_module" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/src/META-INF/src.kotlin_module" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/src/MainKt.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/src/MainKt.class" afterDir="false" />
+    <list default="true" id="d2af005e-f5a1-4952-9141-6a7843460111" name="Changes" comment="Create tokens for parser">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assignment_one/src/parser/Parser.kt" beforeDir="false" afterPath="$PROJECT_DIR$/Assignment_one/src/parser/Parser.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -159,7 +158,15 @@
       <option name="project" value="LOCAL" />
       <updated>1742009216955</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="Create tokens for parser">
+      <option name="closed" value="true" />
+      <created>1742009648044</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1742009648044</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -172,6 +179,7 @@
     <MESSAGE value="lex analysis function" />
     <MESSAGE value="Parser draft" />
     <MESSAGE value="User input" />
-    <option name="LAST_COMMIT_MESSAGE" value="User input" />
+    <MESSAGE value="Create tokens for parser" />
+    <option name="LAST_COMMIT_MESSAGE" value="Create tokens for parser" />
   </component>
 </project>
