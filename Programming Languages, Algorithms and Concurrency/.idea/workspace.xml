@@ -4,9 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d2af005e-f5a1-4952-9141-6a7843460111" name="Changes" comment="Utils folder">
-      <change afterPath="$PROJECT_DIR$/Assignment_one/src/lexer/Lexer.kt" afterDir="false" />
+    <list default="true" id="d2af005e-f5a1-4952-9141-6a7843460111" name="Changes" comment="Data class for token">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assignment_one/src/lexer/Lexer.kt" beforeDir="false" afterPath="$PROJECT_DIR$/Assignment_one/src/lexer/Lexer.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -51,6 +51,7 @@
     "RunOnceActivity.git.unshallow": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "git-widget-placeholder": "main",
+    "ignore.virus.scanning.warn.message": "true",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "E:/GitHub/Massey/Programming Languages, Algorithms and Concurrency",
     "onboarding.tips.debug.path": "E:/GitHub/Massey/Programming Languages, Algorithms and Concurrency/src/src/Main.kt",
@@ -108,7 +109,15 @@
       <option name="project" value="LOCAL" />
       <updated>1741955097105</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Data class for token">
+      <option name="closed" value="true" />
+      <created>1741955379435</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1741955379435</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -117,6 +126,7 @@
     <MESSAGE value="Refactor" />
     <MESSAGE value="extractWords" />
     <MESSAGE value="Utils folder" />
-    <option name="LAST_COMMIT_MESSAGE" value="Utils folder" />
+    <MESSAGE value="Data class for token" />
+    <option name="LAST_COMMIT_MESSAGE" value="Data class for token" />
   </component>
 </project>
