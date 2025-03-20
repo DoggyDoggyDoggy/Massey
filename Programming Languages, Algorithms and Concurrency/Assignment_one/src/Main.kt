@@ -22,9 +22,15 @@ fun main() {
             try {
                 val tokens = lex(stmtText)
                 val parser = Parser(tokens)
+                val stmt = parser.parseStatement()
+                if (parser.pos != tokens.size) {
+                    throw Exception("Extra tokens after correct instruction.")
+                }
+                stmt.execute(env)
             } catch (e: Exception) {
                 println("Error: ${e.message}")
             }
         }
+        prompt = "> "
     }
 }
