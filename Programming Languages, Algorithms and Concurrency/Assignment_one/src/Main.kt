@@ -3,6 +3,8 @@ import parser.Parser
 import utils.findStatementEnd
 import utils.printHeader
 
+//I chose kotlin because I have been programming in it the most lately.
+// I write native android apps.
 
 fun main() {
     printHeader()
