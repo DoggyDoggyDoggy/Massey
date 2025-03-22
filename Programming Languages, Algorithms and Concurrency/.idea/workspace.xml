@@ -6,7 +6,11 @@
   <component name="ChangeListManager">
     <list default="true" id="d2af005e-f5a1-4952-9141-6a7843460111" name="Changes" comment="Working prototype">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assignment_one/src/Main.kt" beforeDir="false" afterPath="$PROJECT_DIR$/Assignment_one/src/Main.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assignment_one/src/lexer/Lexer.kt" beforeDir="false" afterPath="$PROJECT_DIR$/Assignment_one/src/lexer/Lexer.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assignment_one/src/utils/Utils.kt" beforeDir="false" afterPath="$PROJECT_DIR$/Assignment_one/src/utils/Utils.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/src/MainKt.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/src/MainKt.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/src/utils/UtilsKt.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/src/utils/UtilsKt.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -22,6 +26,11 @@
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$/.." value="main" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
   <component name="GitHubPullRequestSearchHistory">{
@@ -48,22 +57,22 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Kotlin.MainKt.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;E:/GitHub/Massey/Programming Languages, Algorithms and Concurrency&quot;,
-    &quot;onboarding.tips.debug.path&quot;: &quot;E:/GitHub/Massey/Programming Languages, Algorithms and Concurrency/src/src/Main.kt&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Kotlin.MainKt.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "git-widget-placeholder": "bug-fix",
+    "ignore.virus.scanning.warn.message": "true",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "E:/GitHub/Massey/Programming Languages, Algorithms and Concurrency",
+    "onboarding.tips.debug.path": "E:/GitHub/Massey/Programming Languages, Algorithms and Concurrency/src/src/Main.kt",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2"
   }
-}</component>
+}]]></component>
   <component name="RunManager">
     <configuration name="MainKt" type="JetRunConfigurationType" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="MainKt" />
