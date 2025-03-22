@@ -20,3 +20,28 @@ fun unescapeLiteral(literal: String): String {
         matchResult.groupValues[1]
     }
 }
+
+// Function that finds the index of the character ';' that is outside a string literal
+fun findStatementEnd(buffer: String): Int {
+    var inLiteral = false
+    var escape = false
+    for (i in buffer.indices) {
+        val c = buffer[i]
+        if (inLiteral) {
+            if (escape) {
+                escape = false
+            } else if (c == '\\') {
+                escape = true
+            } else if (c == '"') {
+                inLiteral = false
+            }
+        } else {
+            if (c == '"') {
+                inLiteral = true
+            } else if (c == ';') {
+                return i
+            }
+        }
+    }
+    return -1
+}
