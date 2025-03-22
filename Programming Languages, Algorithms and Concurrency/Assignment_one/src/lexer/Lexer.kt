@@ -13,12 +13,12 @@ val tokenSpecs: List<Pair<String, String>> = listOf(
     "LIST" to "list",
     "EXIT" to "exit",
     "PRINT" to "print",
-    "CONSTANT" to "SPACE|TAB|NEWLINE",
+    "SKIP" to "[ \\t\\n]+",
+    "CONSTANT" to "\\b(?:SPACE|TAB|NEWLINE)\\b",
     "ID" to "[a-zA-Z][a-zA-Z0-9]*",
     "LITERAL" to "\"(\\\\.|[^\"\\\\])*\"",
     "PLUS" to "\\+",
     "END" to ";",
-    "SKIP" to "[ \\t\\n]+",
     "MISMATCH" to "."
 )
 

@@ -6,11 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="d2af005e-f5a1-4952-9141-6a7843460111" name="Changes" comment="Working prototype">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assignment_one/src/Main.kt" beforeDir="false" afterPath="$PROJECT_DIR$/Assignment_one/src/Main.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assignment_one/src/lexer/Lexer.kt" beforeDir="false" afterPath="$PROJECT_DIR$/Assignment_one/src/lexer/Lexer.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assignment_one/src/utils/Utils.kt" beforeDir="false" afterPath="$PROJECT_DIR$/Assignment_one/src/utils/Utils.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/src/MainKt.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/src/MainKt.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/src/utils/UtilsKt.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/src/utils/UtilsKt.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -63,7 +59,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "git-widget-placeholder": "bug-fix",
+    "git-widget-placeholder": "main",
     "ignore.virus.scanning.warn.message": "true",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "E:/GitHub/Massey/Programming Languages, Algorithms and Concurrency",
@@ -83,6 +79,7 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Kotlin.MainKt" />
         <item itemvalue="Kotlin.MainKt" />
       </list>
     </recent_temporary>
@@ -192,7 +189,23 @@
       <option name="project" value="LOCAL" />
       <updated>1742446439930</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="Bug with ; fixed&#10;&#10;Example 5 work correctly">
+      <option name="closed" value="true" />
+      <created>1742629437288</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1742629437288</updated>
+    </task>
+    <task id="LOCAL-00014" summary="commit">
+      <option name="closed" value="true" />
+      <created>1742629527536</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1742629527536</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -207,6 +220,8 @@
     <MESSAGE value="Create tokens for parser" />
     <MESSAGE value="Parser draft" />
     <MESSAGE value="Working prototype" />
-    <option name="LAST_COMMIT_MESSAGE" value="Working prototype" />
+    <MESSAGE value="Bug with ; fixed&#10;&#10;Example 5 work correctly" />
+    <MESSAGE value="commit" />
+    <option name="LAST_COMMIT_MESSAGE" value="commit" />
   </component>
 </project>
