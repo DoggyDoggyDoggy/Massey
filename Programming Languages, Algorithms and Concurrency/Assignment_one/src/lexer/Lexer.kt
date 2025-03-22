@@ -29,14 +29,17 @@ fun lex(input: String): List<Token> {
     while (pos < input.length) {
         var matchFound = false
         for ((type, pattern) in tokenSpecs) {
-            val regex = Regex("^$pattern")
+            val regex = if (type == "LITERAL")
+                Regex("^$pattern", RegexOption.DOT_MATCHES_ALL)
+            else
+                Regex("^$pattern")
             val matchResult = regex.find(input.substring(pos))
             if (matchResult != null) {
                 matchFound = true
                 val value = matchResult.value
                 when (type) {
-                    "SKIP" -> { /* Skip space */ }
-                    "MISMATCH" -> throw Exception("Unrecognized character '$value' in position $pos")
+                    "SKIP" -> { }
+                    "MISMATCH" -> throw Exception("Unrecognized character '$value' at position $pos")
                     else -> tokens.add(Token(type, value, pos))
                 }
                 pos += value.length
@@ -44,7 +47,7 @@ fun lex(input: String): List<Token> {
             }
         }
         if (!matchFound) {
-            throw Exception("Unrecognized character in position $pos")
+            throw Exception("Unrecognized character at position $pos")
         }
     }
     return tokens
