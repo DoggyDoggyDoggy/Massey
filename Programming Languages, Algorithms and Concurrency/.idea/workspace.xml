@@ -4,9 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d2af005e-f5a1-4952-9141-6a7843460111" name="Changes" comment="token oerder for example 2">
+    <list default="true" id="d2af005e-f5a1-4952-9141-6a7843460111" name="Changes" comment="commit">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assignment_one/src/Main.kt" beforeDir="false" afterPath="$PROJECT_DIR$/Assignment_one/src/Main.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -213,7 +212,15 @@
       <option name="project" value="LOCAL" />
       <updated>1742629758312</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="commit">
+      <option name="closed" value="true" />
+      <created>1742630598597</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1742630598597</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -229,8 +236,8 @@
     <MESSAGE value="Parser draft" />
     <MESSAGE value="Working prototype" />
     <MESSAGE value="Bug with ; fixed&#10;&#10;Example 5 work correctly" />
-    <MESSAGE value="commit" />
     <MESSAGE value="token oerder for example 2" />
-    <option name="LAST_COMMIT_MESSAGE" value="token oerder for example 2" />
+    <MESSAGE value="commit" />
+    <option name="LAST_COMMIT_MESSAGE" value="commit" />
   </component>
 </project>
