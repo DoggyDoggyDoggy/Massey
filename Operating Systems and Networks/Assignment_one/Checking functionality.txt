@@ -1,0 +1,115 @@
+------------------------------------/* USER */------------------------------------------------------
+
+C:\Users\pedan>ftp
+ftp> open ::1 1234
+Connected to ::1.
+220 FTP Server ready.
+502 Command not implemented.
+User (::1:(none)): napoleon
+331 Password required.
+Password:
+
+230 Login successful.
+ftp> dir
+200 EPRT command successful.
+150 Opening data connection for directory listing.
+ Volume in drive E is HDDSecond
+ Volume Serial Number is 4237-DAA2
+
+ Directory of E:\GitHub\Massey\Operating Systems and Networks\Assignment_one
+
+09/04/2025  04:14 pm    <DIR>          .
+21/03/2025  07:33 pm    <DIR>          ..
+21/03/2025  09:56 pm    <DIR>          .vscode
+04/04/2025  01:29 pm               684 makefile
+09/04/2025  04:12 pm            25,942 server.cpp
+09/04/2025  04:14 pm           185,723 server.exe
+09/04/2025  04:18 pm                 0 tmp.txt
+               4 File(s)        212,349 bytes
+               3 Dir(s)  932,036,300,800 bytes free
+226 Directory send OK.
+ftp: 572 bytes received in 0.01Seconds 40.86Kbytes/sec.
+ftp> binary
+200 Command OK.
+ftp> ascii
+200 Command OK.
+ftp> dir
+200 EPRT command successful.
+150 Opening data connection for directory listing.
+ Volume in drive E is HDDSecond
+ Volume Serial Number is 4237-DAA2
+
+ Directory of E:\GitHub\Massey\Operating Systems and Networks\Assignment_one
+
+09/04/2025  04:19 pm    <DIR>          .
+21/03/2025  07:33 pm    <DIR>          ..
+21/03/2025  09:56 pm    <DIR>          .vscode
+04/04/2025  01:29 pm               684 makefile
+09/04/2025  04:12 pm            25,942 server.cpp
+09/04/2025  04:14 pm           185,723 server.exe
+09/04/2025  04:20 pm                 0 tmp.txt
+09/04/2025  04:19 pm            71,993 white.jpg
+               5 File(s)        284,342 bytes
+               3 Dir(s)  932,036,227,072 bytes free
+226 Directory send OK.
+ftp: 621 bytes received in 0.01Seconds 41.40Kbytes/sec.
+ftp> get white.jpg
+200 EPRT command successful.
+150 Opening data connection for file transfer.
+226 File transfer complete.
+ftp: 226 bytes received in 0.00Seconds 226000.00Kbytes/sec.
+ftp> quit
+221 Connection closing.
+
+------------------------------------------------------/* SERVER */------------------------------------------------------
+
+============================================
+   << 159.342 Cross-platform FTP Server >>
+   submitted by: Denys Pedan#23011350
+   date:09/04/2025
+============================================
+
+------------------------------------------------------------------------
+SERVER is waiting for an incoming connection request at port: 1234
+------------------------------------------------------------------------
+
+Connected to [CLIENT's IP ::1 , port 54628] through SERVER's port 1234
+[DEBUG INFO] Command received: 'OPTS UTF8 ON\r\n'
+Unrecognised command (OPTS not implemented).
+[DEBUG INFO] <-- 502 Command not implemented.
+
+[DEBUG INFO] Command received: 'USER napoleon\r\n'
+[DEBUG INFO] <-- 331 Password required.
+
+[DEBUG INFO] Command received: 'PASS 342\r\n'
+[DEBUG INFO] <-- 230 Login successful.
+
+[DEBUG INFO] Command received: 'EPRT |2|::1|54648|\r\n'
+[DEBUG INFO] <-- 200 EPRT command successful.
+
+[DEBUG INFO] Command received: 'LIST\r\n'
+[DEBUG INFO] Command received: 'TYPE I\r\n'
+Using binary mode to transfer files.
+[DEBUG INFO] <-- 200 Command OK.
+
+[DEBUG INFO] Command received: 'TYPE A\r\n'
+Using ASCII mode to transfer files.
+[DEBUG INFO] <-- 200 Command OK.
+
+[DEBUG INFO] Command received: 'EPRT |2|::1|54723|\r\n'
+[DEBUG INFO] <-- 200 EPRT command successful.
+
+[DEBUG INFO] Command received: 'LIST\r\n'
+[DEBUG INFO] Command received: 'EPRT |2|::1|54735|\r\n'
+[DEBUG INFO] <-- 200 EPRT command successful.
+
+[DEBUG INFO] Command received: 'RETR white.jpg\r\n'
+[DEBUG INFO] Command received: 'QUIT\r\n'
+Quit command received.
+[DEBUG INFO] <-- 221 Connection closing.
+
+DISCONNECTED from client.
+
+------------------------------------------------------------------------
+SERVER is waiting for an incoming connection request at port: 1234
+------------------------------------------------------------------------

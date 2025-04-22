@@ -1,0 +1,17 @@
+ Volume in drive E is HDDSecond
+ Volume Serial Number is 4237-DAA2
+
+ Directory of E:\GitHub\Massey\Operating Systems and Networks\Assignment_one
+
+09/04/2025  05:14 pm    <DIR>          .
+21/03/2025  07:33 pm    <DIR>          ..
+21/03/2025  09:56 pm    <DIR>          .vscode
+09/04/2025  04:23 pm             4,143 Checking functionality.txt
+04/04/2025  01:29 pm               684 makefile
+09/04/2025  04:12 pm            25,942 server.cpp
+09/04/2025  04:14 pm           185,723 server.exe
+09/04/2025  05:14 pm                 8 test.txt
+09/04/2025  05:15 pm                 0 tmp.txt
+09/04/2025  04:19 pm            71,993 white.jpg
+               7 File(s)        288,493 bytes
+               3 Dir(s)  932,036,218,880 bytes free
