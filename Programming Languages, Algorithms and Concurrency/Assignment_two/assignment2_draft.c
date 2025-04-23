@@ -1,11 +1,14 @@
 // --------------------------------------------------
 // ---   159.341 Assignment 2 - Lift Simulator    ---
 // --------------------------------------------------
-// Denys Pedan #23011350
+// Written by M. J. Johnson
+// Updated by D. P. Playne
 #include <stdio.h>
 #include <stddef.h>
 #include <stdlib.h>
 #include "lift.h"
+
+
 
 // --------------------------------------------------
 // Define Problem Size
@@ -40,11 +43,6 @@
 #define DOWN -1
 
 // --------------------------------------------------
-// Mutual exclusion for printing
-// --------------------------------------------------
-semaphore print_mutex;
-
-// --------------------------------------------------
 // Information about a floor in the building
 // --------------------------------------------------
 typedef struct {
@@ -52,7 +50,6 @@ typedef struct {
     int waitingtogodown;    // The number of people waiting to go down
     semaphore up_arrow;     // People going up wait on this
     semaphore down_arrow;   // People going down wait on this
-    semaphore mutex;        // Protects waiting counts
 } floor_info;
 
 // --------------------------------------------------
@@ -65,38 +62,35 @@ typedef struct {
     int peopleinlift;             // The number of people in the lift
     int stops[NFLOORS];           // How many people are going to each floor
     semaphore stopsem[NFLOORS];   // People in the lift wait on one of these
-    semaphore mutex;              // Protects peopleinlift and stops[]
 } lift_info;
 
 // --------------------------------------------------
 // Some global variables
 // --------------------------------------------------
 floor_info floors[NFLOORS];
-
-// --------------------------------------------------
-// External declarations (global lifts)
-// --------------------------------------------------
-lift_info lifts[NLIFTS];
+lift_info lifts[NLIFTS];             // Global array of lifts
+semaphore floor_mutex[NFLOORS];      // Mutex for each floor
+semaphore lift_mutex[NLIFTS];        // Mutex for each lift
+semaphore print_mutex;               // Mutex for printing
+semaphore lobby_mutex;               // Mutex to protect global_lift
+lift_info *global_lift = NULL;       // Pointer to lift for boarding
 
 // --------------------------------------------------
 // Print a string on the screen at position (x,y)
 // --------------------------------------------------
 void print_at_xy(int x, int y, const char *s) {
-    // Mutual exclusion for screen output
     semaphore_wait(&print_mutex);
-
     // Move cursor to (x,y)
     gotoxy(x,y);
-
-    // Slow things down
-	Sleep(1);
     
-    // Print the string
-	printf("%s", s);
+    // Slow things down
+    Sleep(1);
 
+    // Print the string
+    printf("%s", s);
+    
     // Move cursor out of the way
     gotoxy(42, NFLOORS+2);
-
     semaphore_signal(&print_mutex);
 }
 
@@ -105,180 +99,214 @@ void print_at_xy(int x, int y, const char *s) {
 // floor going in a certain direction
 // --------------------------------------------------
 void get_into_lift(lift_info *lift, int direction) {
-    
     // Local variables
     int *waiting;
-    semaphore *arrow;
-    int count;
+    semaphore *s;
 
     // Check lift direction
-    if(direction == UP) {
+    if(direction==UP) {
         // Use up_arrow semaphore
-        arrow = &floors[lift->position].up_arrow;
+        s = &floors[lift->position].up_arrow;
+
         // Number of people waiting to go up
         waiting = &floors[lift->position].waitingtogoup;
     } else {
         // Use down_arrow semaphore
-        arrow = &floors[lift->position].down_arrow;
+        s = &floors[lift->position].down_arrow;
+
         // Number of people waiting to go down
         waiting = &floors[lift->position].waitingtogodown;
     }
 
+    // For all the people waiting
     while(1) {
-        semaphore_wait(&floors[lift->position].mutex);
-        count = *waiting;
-        semaphore_signal(&floors[lift->position].mutex);
-        if(count == 0) break;
-
-        semaphore_wait(&lift->mutex);
-        if(lift->peopleinlift >= MAXNOINLIFT) {
-            semaphore_signal(&lift->mutex);
+        semaphore_wait(&floor_mutex[lift->position]);
+        if(*waiting == 0 || lift->peopleinlift >= MAXNOINLIFT) {
+            semaphore_signal(&floor_mutex[lift->position]);
             break;
         }
-        // First person sets lift direction
-        if(lift->peopleinlift == 0)
-            lift->direction = direction;
+        // Add person to the lift
         lift->peopleinlift++;
-        semaphore_signal(&lift->mutex);
 
-        // Remove one waiting
-        semaphore_wait(&floors[lift->position].mutex);
+        // Erase the person from the waiting queue
+        print_at_xy(NLIFTS*4 + floors[lift->position].waitingtogodown + floors[lift->position].waitingtogoup,
+                    NFLOORS-lift->position, " ");
+
+        // One less person waiting
         (*waiting)--;
-        semaphore_signal(&floors[lift->position].mutex);
+        semaphore_signal(&floor_mutex[lift->position]);
 
-        // Erase waiting person
-        print_at_xy(NLIFTS*4 +
-            floors[lift->position].waitingtogodown +
-            floors[lift->position].waitingtogoup,
-            NFLOORS - lift->position, " ");
-
-        // Signal one waiting passenger to board
-        semaphore_signal(arrow);
-
+        // Wait for person to get into lift
         Sleep(GETINSPEED);
+
+        // Set which lift the passenger should enter
+        semaphore_wait(&lobby_mutex);
+        global_lift = lift;
+        semaphore_signal(&lobby_mutex);
+
+        // Signal passenger to enter
+        semaphore_signal(s);
     }
 }
 
 // --------------------------------------------------
 // Function for the Lift Threads
 // --------------------------------------------------
-void* lift_thread(void *arg) {
-    // Local variables
-    lift_info *lift = (lift_info*)arg;
-    int i;
-
-    // Initialize lift state
-    lift->position = 0;
-    lift->direction = UP;
-    lift->peopleinlift = 0;
-    semaphore_create(&lift->mutex, 1);
+void* lift_thread(void *p) {
+     // Local variables
+     unsigned long long idx = (unsigned long long)p;
+     int no = (int)idx;
+     lift_info *lift = &lifts[no];      // Use global lift
+     int i;
+    
+    // Set up Lift
+    lift->no = no;           // Set lift number
+    lift->position = 0;      // Lift starts on ground floor
+    lift->direction = UP;    // Lift starts going up
+    lift->peopleinlift = 0;  // Lift starts empty
 
     for(i = 0; i < NFLOORS; i++) {
-        lift->stops[i] = 0;
-        semaphore_create(&lift->stopsem[i], 0);
+        lift->stops[i]=0;                        // No passengers waiting
+        semaphore_create(&lift->stopsem[i], 0);  // Initialise semaphores
     }
 
+    // Randomise lift
     randomise();
+
+    // Wait for random start up time (up to a second)
     Sleep(rnd(1000));
 
+    // Loop forever
     while(1) {
-        // Draw lift
-        print_at_xy(lift->no*4 + 1, NFLOORS - lift->position, lf);
+        // Print current position of the lift
+        print_at_xy(no*4+1, NFLOORS-lift->position, lf);
+
+        // Wait for a while
         Sleep(LIFTSPEED);
 
-        // Drop off passengers
+        // Drop off passengers on this floor
         while (1) {
-            semaphore_wait(&lift->mutex);
+            semaphore_wait(&lift_mutex[lift->no]);
             if(lift->stops[lift->position] == 0) {
-                semaphore_signal(&lift->mutex);
+                semaphore_signal(&lift_mutex[lift->no]);
                 break;
             }
+            // One less passenger in lift
             lift->peopleinlift--;
-            lift->stops[lift->position]--;
-            semaphore_signal(&lift->mutex);
 
+            // One less waiting to get off at this floor
+            lift->stops[lift->position]--;
+            semaphore_signal(&lift_mutex[lift->no]);
+
+            // Wait for exit lift delay
             Sleep(GETOUTSPEED);
-            // Signal passenger to leave
+
+            // Signal passenger to leave lift            
             semaphore_signal(&lift->stopsem[lift->position]);
 
-            if(lift->stops[lift->position] == 0) {
-                print_at_xy(lift->no*4+3, NFLOORS - lift->position, " ");
+            // Check if that was the last passenger waiting for this floor
+            if(lift->stops[lift->position]==0) {
+                // Clear the "-"
+                print_at_xy(no*4+1+2, NFLOORS-lift->position, " ");
             }
         }
-
-        // Pick up
-        if(lift->direction == UP || lift->peopleinlift == 0)
+        // Check if lift is going up or is empty
+        if(lift->direction==UP || lift->peopleinlift==0) {
+            // Pick up passengers waiting to go up
             get_into_lift(lift, UP);
-        if(lift->direction == DOWN || lift->peopleinlift == 0)
+        }
+        // Check if lift is going down or is empty
+        if(lift->direction==DOWN || lift->peopleinlift==0) {
+            // Pick up passengers waiting to go down
             get_into_lift(lift, DOWN);
+        }
+        
+        // Erase lift from screen
+        print_at_xy(no*4+1, NFLOORS-lift->position, (lift->direction + 1 ? " " : lc));
 
-        // Erase lift and move
-        print_at_xy(lift->no*4 + 1, NFLOORS - lift->position, " ");
+        // Move lift
         lift->position += lift->direction;
-        if(lift->position == 0 || lift->position == NFLOORS-1)
+
+        // Check if lift is at top or bottom
+        if(lift->position == 0 || lift->position == NFLOORS-1) {
+            // Change lift direction
             lift->direction = -lift->direction;
+        }
     }
+    
     return NULL;
 }
 
 // --------------------------------------------------
 // Function for the Person Threads
 // --------------------------------------------------
-void* person_thread(void *arg) {
-    int from = 0, to;
+void* person_thread(void *p) {
+    // Local variables
+    int from = 0, to; // Start on the ground floor
     lift_info *lift;
-    int i;
 
+    // Randomise
     randomise();
-    while(1) {
-        Sleep(rnd(PEOPLESPEED));
-        do { to = rnd(NFLOORS); } while(to == from);
 
-        // Press button and wait
+    // Stay in the building forever
+    while(1) {
+        // Work for a while
+        Sleep(rnd(PEOPLESPEED));
+        do {
+            // Randomly pick another floor to go to
+            to = rnd(NFLOORS);
+        } while(to == from);
+
+        // Check which direction the person is going (UP/DOWN)
         if(to > from) {
-            semaphore_wait(&floors[from].mutex);
+            // One more person waiting to go up
+            semaphore_wait(&floor_mutex[from]);
             floors[from].waitingtogoup++;
-            semaphore_signal(&floors[from].mutex);
-            print_at_xy(NLIFTS*4 + floors[from].waitingtogodown + floors[from].waitingtogoup,
-                        NFLOORS - from, pr);
+            semaphore_signal(&floor_mutex[from]);
+            
+            // Print person waiting
+            print_at_xy(NLIFTS*4 + floors[from].waitingtogoup + floors[from].waitingtogodown,
+                        NFLOORS-from, pr);
+            
+            // Wait for a lift to arrive (going up)
             semaphore_wait(&floors[from].up_arrow);
         } else {
-            semaphore_wait(&floors[from].mutex);
+            // One more person waiting to go down
+            semaphore_wait(&floor_mutex[from]);
             floors[from].waitingtogodown++;
-            semaphore_signal(&floors[from].mutex);
+            semaphore_signal(&floor_mutex[from]);
+            
+            // Print person waiting
             print_at_xy(NLIFTS*4 + floors[from].waitingtogodown + floors[from].waitingtogoup,
-                        NFLOORS - from, pr);
+                        NFLOORS-from, pr);
+            
+            // Wait for a lift to arrive (going down)
             semaphore_wait(&floors[from].down_arrow);
         }
+        
+        // Which lift we are getting into
+        semaphore_wait(&lobby_mutex);
+        lift = global_lift;
+        semaphore_signal(&lobby_mutex);
 
-        // Find the lift we just boarded
-        for(i = 0; i < NLIFTS; i++) {
-            semaphore_wait(&lifts[i].mutex);
-            if(lifts[i].position == from &&
-               ((to>from && lifts[i].direction==UP) ||
-                (to<from && lifts[i].direction==DOWN)) &&
-               lifts[i].peopleinlift <= MAXNOINLIFT) {
-                lift = &lifts[i];
-                semaphore_signal(&lifts[i].mutex);
-                break;
-            }
-            semaphore_signal(&lifts[i].mutex);
-        }
-
-        // Request destination
-        semaphore_wait(&lift->mutex);
+        // Add one to passengers waiting for floor
+        semaphore_wait(&lift_mutex[lift->no]);
         lift->stops[to]++;
-        if(lift->stops[to] == 1) {
-            print_at_xy(lift->no*4 + 3, NFLOORS - to, "-");
-        }
-        semaphore_signal(&lift->mutex);
+        semaphore_signal(&lift_mutex[lift->no]);
 
-        // Wait until arrival
+        // Press button if we are the first
+        if(lift->stops[to]==1) {
+            // Print light for destination
+            print_at_xy(lift->no*4+1+2, NFLOORS-to, "-");
+        }
+
+        // Wait until we are at the right floor
         semaphore_wait(&lift->stopsem[to]);
 
-        // Exit lift
+        // Exit the lift
         from = to;
     }
+    
     return NULL;
 }
 
@@ -291,24 +319,32 @@ void printbuilding(void) {
 
     // Clear Screen
     system(clear_screen);
+    
     // Print Roof
     printf("%s", tl);
-    for(l = 0; l < NLIFTS-1; l++) printf("%s%s%s%s", hl, td, hl, td);
+    for(l = 0; l < NLIFTS-1; l++) {
+        printf("%s%s%s%s", hl, td, hl, td);
+    }
     printf("%s%s%s%s\n", hl, td, hl, tr);
 
     // Print Floors and Lifts
     for(f = NFLOORS-1; f >= 0; f--) {
         for(l = 0; l < NLIFTS; l++) {
             printf("%s%s%s ", vl, lc, vl);
-            if(l == NLIFTS-1) printf("%s\n", vl);
+            if(l == NLIFTS-1) {
+                printf("%s\n", vl);
+            }
         }
     }
-    
+
     // Print Ground
     printf("%s", bl);
-    for(l = 0; l < NLIFTS-1; l++) printf("%s%s%s%s", hl, tu, hl, tu);
+    for(l = 0; l < NLIFTS-1; l++) {
+        printf("%s%s%s%s", hl, tu, hl, tu);
+    }
     printf("%s%s%s%s\n", hl, tu, hl, br);
 
+    // Print Message
     printf("Lift Simulation - Press CTRL-Break to exit\n");
 }
 
@@ -317,35 +353,40 @@ void printbuilding(void) {
 // --------------------------------------------------
 int main() {
     // Local variables
-    unsigned long long i;
+    unsigned long i;
 
-    // Initialize print mutex
-    semaphore_create(&print_mutex, 1);
-
-    // Initialize floors
+    // Initialise Building
     for(i = 0; i < NFLOORS; i++) {
+        // Initialise Floor
         floors[i].waitingtogoup = 0;
         floors[i].waitingtogodown = 0;
         semaphore_create(&floors[i].up_arrow, 0);
         semaphore_create(&floors[i].down_arrow, 0);
-        semaphore_create(&floors[i].mutex, 1);
+        semaphore_create(&floor_mutex[i], 1);
     }
 
+    // Initialise lift mutexes and print/lobby mutex
+    for(i = 0; i < NLIFTS; i++) {
+        semaphore_create(&lift_mutex[i], 1);
+    }
+    semaphore_create(&print_mutex, 1);
+    semaphore_create(&lobby_mutex, 1);
+    
     // Print Building
     printbuilding();
 
-    // Create lifts
+    // Create Lifts
     for(i = 0; i < NLIFTS; i++) {
-        lifts[i].no = i;
-        create_thread(lift_thread, &lifts[i]);
+        // Create Lift Thread
+        create_thread(lift_thread, (void*)(uintptr_t)i);
     }
 
-    // Create people
+    // Create People
     for(i = 0; i < NPEOPLE; i++) {
         // Create Person Thread
-        create_thread(person_thread, (void*)i);
+        create_thread(person_thread, (void*)(uintptr_t)i);
     }
 
+    // Go to sleep for 86400 seconds (one day)
     Sleep(86400000ULL);
-    return 0;
 }
