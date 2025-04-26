@@ -3,6 +3,7 @@
 // --------------------------------------------------
 // Written by M. J. Johnson
 // Updated by D. P. Playne
+// Student: Denys Pedan #23011350
 #include <stdio.h>
 #include <stddef.h>
 #include <stdlib.h>
@@ -345,6 +346,12 @@ void printbuilding(void) {
 
     // Print Message
     printf("Lift Simulation - Press CTRL-Break to exit\n");
+
+    printf("----------------------------------------\n");
+    printf(" 159.341 Assignment 2 Semester 1 2025 \n");
+    printf(" Submitted by: Denys Pedan, 23011350 \n");
+    printf("----------------------------------------\n");
+
 }
 
 // --------------------------------------------------
