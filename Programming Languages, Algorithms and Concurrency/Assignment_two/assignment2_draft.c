@@ -8,8 +8,6 @@
 #include <stdlib.h>
 #include "lift.h"
 
-
-
 // --------------------------------------------------
 // Define Problem Size
 // --------------------------------------------------
@@ -18,11 +16,12 @@
 #define NPEOPLE 20        // The number of people in the building
 #define MAXNOINLIFT 10    // Maximum number of people in a lift
 
+
 // --------------------------------------------------
 // Define delay times (in milliseconds)
 // --------------------------------------------------
 #define SLOW
-// #define FAST
+//#define FAST
 
 #if defined(SLOW)
     #define LIFTSPEED 50      // The time it takes for the lift to move one floor
