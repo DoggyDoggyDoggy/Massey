@@ -438,4 +438,3 @@ hints.ai_protocol = IPPROTO_TCP;
 
    return 0;
 }
-
