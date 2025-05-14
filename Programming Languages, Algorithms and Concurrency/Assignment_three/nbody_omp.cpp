@@ -164,6 +164,11 @@ void initialise() {
 #else
     // Main Function - Benchmark
     int main() {
+        std::cout << "----------------------------------------\n";
+        std::cout << "159.341 Assignment 3 Semester 1 2025    \n";
+        std::cout << "Submitted by: Denys Pedan, 23011350\n";
+        std::cout << "----------------------------------------\n";
+
         initialise();
         auto start = std::chrono::high_resolution_clock::now();
         for (int i = 0; i < NO_STEPS; ++i)
