@@ -130,6 +130,7 @@ void initialise() {
 #ifdef GRAPHICS
     // Main Function - Graphical Display
     int main() {
+        // Create Window
         sf::ContextSettings settings;
         settings.antialiasingLevel = 1;
         sf::RenderWindow window(
@@ -138,50 +139,99 @@ void initialise() {
             sf::Style::Default,
             settings
         );
+
+        // Initialise NBody Simulation
         initialise();
         int step = 0;
+        // run the program as long as the window is open
         while (window.isOpen()) {
+            // check all the window's events that were triggered since the last iteration of the loop
             sf::Event event;
             while (window.pollEvent(event)) {
+                // "close requested" event: we close the window
                 if (event.type == sf::Event::Closed)
                     window.close();
             }
             if (step < NO_STEPS) {
+                // Update NBody Simluation
                 update();
                 ++step;
             }
+
+            // Clear the window with black color
             window.clear(sf::Color::Black);
+
+            // Render Objects
             for (int i = 0; i < N; ++i) {
+                // Create Circle
                 sf::CircleShape shape(bodies[i].radius);
                 shape.setFillColor(sf::Color::Red);
                 shape.setPosition(bodies[i].pos.x, bodies[i].pos.y);
+
+                // Draw Object
                 window.draw(shape);
             }
+
+            // Display Windo
             window.display();
         }
         return 0;
     }
 #else
-    // Main Function - Benchmark
-    int main() {
+   // Main Function - Benchmark
+	int main() {
         std::cout << "----------------------------------------\n";
         std::cout << "159.341 Assignment 3 Semester 1 2025    \n";
         std::cout << "Submitted by: Denys Pedan, 23011350\n";
         std::cout << "----------------------------------------\n";
 
-        initialise();
-        auto start = std::chrono::high_resolution_clock::now();
-        for (int i = 0; i < NO_STEPS; ++i)
-            update();
-        auto end = std::chrono::high_resolution_clock::now();
-        // Write output
-        write_data("output.dat", bodies, N);
-        write_image("output.png", bodies, N, width, height);
-        calculate_maximum_difference("reference.dat", bodies, N);
-        double secs =
-            std::chrono::duration_cast<std::chrono::microseconds>(end - start)
-            .count() / 1e6;
-        std::cout << "Time Taken: " << secs << " seconds\n";
-        return 0;
-    }
+		// Initialise NBody Simulation
+		initialise();
+
+		// Get start time
+		std::chrono::system_clock::time_point start = std::chrono::system_clock::now();
+
+		// Run Simulation
+		for(int i = 0; i < NO_STEPS; i++) {
+			// Update NBody Simluation
+			update();
+		}
+
+		// Get end time
+		std::chrono::system_clock::time_point end = std::chrono::system_clock::now();
+
+		// Generate output image
+		unsigned char *image = new unsigned char[width * height * 3];
+		memset(image, 0, width * height * 3);
+
+		// For each body
+		for(int i = 0; i < N; ++i) {
+			// Get Position
+			vec2 p = bodies[i].pos;
+
+			// Check particle is within bounds
+			if(p.x >= 0 && p.x < width && p.y >= 0 && p.y < height) {
+				// Add a red dot at body
+				image[((((int)p.y * width) + (int)p.x) * 3)] = 255;
+			}
+		}
+
+		// Write position data to file
+		char data_file[200];
+		sprintf(data_file, "output%i.dat", N);
+		write_data(data_file, bodies, N);
+
+		// Write image to file
+		char image_file[200];
+		sprintf(image_file, "output%i.png", N);
+		write_image(image_file, bodies, N, width, height);
+
+		// Check Results
+		char reference_file[200];
+		sprintf(reference_file, "reference%i.dat", N);
+		calculate_maximum_difference(reference_file, bodies, N);
+
+		// Time Taken
+		std::cout << "Time Taken: " << std::chrono::duration_cast<std::chrono::microseconds>(end - start).count()/1000000.0 << std::endl;
+	}
 #endif
