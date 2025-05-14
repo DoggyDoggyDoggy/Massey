@@ -52,15 +52,25 @@ const int numBlocks = (N + TILE - 1) / TILE;
 
 // N-Body update with tiled OpenMP
 void update() {
+    // Global accumulator, zeroed each call
     static std::vector<vec2> acc(N);
     std::fill(acc.begin(), acc.end(), vec2(0,0));
 
+    // Number of OpenMP threads
+    int T = omp_get_max_threads();
+
+    // Allocate per-thread local buffers
+    // We store pointers in an array so we can index by thread ID later
+    static std::vector<std::vector<vec2>> local_acc(T, std::vector<vec2>(N, vec2(0,0)));
+
     #pragma omp parallel
     {
-        // Local buffer per thread
-        std::vector<vec2> local_acc(N, vec2(0,0));
+        int tid = omp_get_thread_num();
+        auto &la = local_acc[tid];
+        // Zero only once at start of parallel region (if needed)
+        std::fill(la.begin(), la.end(), vec2(0,0));
 
-        // Process blocks dynamically
+        // Tiled force computation
         #pragma omp for schedule(dynamic,1)
         for(int bi = 0; bi < numBlocks; ++bi) {
             for(int bj = bi; bj < numBlocks; ++bj) {
@@ -68,6 +78,7 @@ void update() {
                 int i1 = std::min(i0 + TILE, N);
                 int j0 = bj * TILE;
                 int j1 = std::min(j0 + TILE, N);
+
                 for(int i = i0; i < i1; ++i) {
                     int startJ = (bi == bj ? std::max(i+1, j0) : j0);
                     for(int j = startJ; j < j1; ++j) {
@@ -79,30 +90,40 @@ void update() {
                         double f = -G * bodies[i].mass * bodies[j].mass / d2;
                         vec2 ai = (u * f / bodies[i].mass) * x;
                         vec2 aj = (u * -f / bodies[j].mass) * x;
-                        local_acc[i] += ai;
-                        local_acc[j] += aj;
+                        la[i] += ai;
+                        la[j] += aj;
                     }
                 }
-                // Merge local to global
-                #pragma omp critical
-                {
-                    for(int i = i0; i < i1; ++i) acc[i] += local_acc[i];
-                    if(bi != bj) for(int j = j0; j < j1; ++j) acc[j] += local_acc[j];
-                }
-                // Reset local_acc for block
-                for(int i = i0; i < i1; ++i) local_acc[i] = vec2(0,0);
-                if(bi != bj) for(int j = j0; j < j1; ++j) local_acc[j] = vec2(0,0);
             }
+        }
+    } // end parallel compute
+
+    // Kahan-style merge of each thread's local_acc into global acc
+    std::vector<vec2> c(N, vec2(0,0));  // compensation terms
+    for(int tid = 0; tid < T; ++tid) {
+        auto &la = local_acc[tid];
+        for(int i = 0; i < N; ++i) {
+            // Kahan summation for x
+            long double yx = (long double)la[i].x - (long double)c[i].x;
+            long double tx = (long double)acc[i].x + yx;
+            c[i].x = (double)((tx - (long double)acc[i].x) - yx);
+            acc[i].x = (double)tx;
+            // Kahan summation for y
+            long double yy = (long double)la[i].y - (long double)c[i].y;
+            long double ty = (long double)acc[i].y + yy;
+            c[i].y = (double)((ty - (long double)acc[i].y) - yy);
+            acc[i].y = (double)ty;
         }
     }
 
-    // Update positions and velocities
+    // Finally, update positions and velocities in parallel
     #pragma omp parallel for schedule(static)
     for(int i = 0; i < N; ++i) {
         bodies[i].pos += bodies[i].vel * dt;
         bodies[i].vel += acc[i] * dt;
     }
 }
+
 
 // Initialise NBody Simulation
 void initialise() {
