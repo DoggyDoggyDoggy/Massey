@@ -8,7 +8,8 @@ def put_to_dynamo(device_id):
     timestamp = int(datetime.utcnow().timestamp())
     table.put_item(Item={
         'deviceId': device_id,
-        'timestamp': timestamp
+        'timestamp': timestamp,
+        'soilmoisture': 15
     })
 
 put_to_dynamo("py_test")
