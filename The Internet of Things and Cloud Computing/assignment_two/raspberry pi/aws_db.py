@@ -1,16 +1,18 @@
 import boto3
 from datetime import datetime
 
-dynamodb = boto3.resource('dynamodb', region_name='ap-southeast-2')
+dynamodb = boto3.resource('dynamodb', region_name = 'ap-southeast-2')
 table = dynamodb.Table('SoilMoisture')
 
-def put_to_dynamo(device_id):
-    timestamp = int(datetime.utcnow().timestamp())
-    table.put_item(Item={
-        'deviceId': device_id,
-        'timestamp': timestamp,
-        'soilmoisture': 15
-    })
 
-put_to_dynamo("py_test")
-print("done")
+def put_to_dynamo(device_id, soilmoisture):
+    timestamp = int(datetime.utcnow().timestamp())
+    try:
+        table.put_item(Item={
+            'deviceId': device_id,
+            'timestamp': timestamp,
+            'soilmoisture': soilmoisture
+        })
+        print(f"[+] Uploaded: {device_id} - {soilmoisture} at {timestamp}")
+    except Exception as e:
+        print(f"[!] Error sending to DynamoDB: {e}")
