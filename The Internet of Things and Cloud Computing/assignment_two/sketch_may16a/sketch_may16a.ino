@@ -3,7 +3,6 @@ void setup() {
 }
 
 void loop() {
-  Serial.print("Moisture Sensor Value: ");
-  Serial.println(analogRead(0)); 
-  delay(5000);
+  Serial.print(analogRead(0)); 
+  delay(1800000);
 }
