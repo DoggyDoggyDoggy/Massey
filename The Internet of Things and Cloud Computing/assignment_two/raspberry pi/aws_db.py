@@ -1,12 +1,12 @@
 import boto3
-from datetime import datetime
+from datetime import datetime, timezone
 
 dynamodb = boto3.resource('dynamodb', region_name = 'ap-southeast-2')
 table = dynamodb.Table('SoilMoisture')
 
 
 def put_to_dynamo(device_id, soilmoisture):
-    timestamp = int(datetime.utcnow().timestamp())
+    timestamp = int(datetime.now(timezone.utc).timestamp())
     try:
         table.put_item(Item={
             'deviceId': device_id,
