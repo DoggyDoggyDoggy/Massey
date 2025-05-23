@@ -1,0 +1,43 @@
+MALLOC RESULTS
+
+
+C:\159342\A3>main
+=========================================
+          << RUN COMPLETE TEST >>
+          << SIMULATION 2 >>
+=========================================
+Page size is 4096 bytes.
+QueryPerformanceCounter started.
+Memory (initialMemory) = 876544 bytes, or 856.00 KiloBytes, or 0.84 MegaBytes
+
+
+<<<<<<<<<<<<<<<<< Simulation starts... , max iterations = 200000 >>>>>>>>>>>>>>>
+
+
+ executing 200000 rounds of combinations of memory allocation and deallocation...
+
+<<<<<<<<<<<<< End of simulation >>>>>>>>>>>>
+
+========================================================
+
+----------<< malloc PERFORMANCE REPORT >>---------
+
+Elapsed Time = 105521 microsec(s).
+Memory (After simulation): 140733085286400, or 137434653600.00 KiloBytes, or 134213528.91 MegaBytes, or 131067.90 GigaBytes
+Memory Used = 22970368 bytes, or 22432.00 KiloBytes, or 21.91 MegaBytes
+
+
+///////////////////////////////////////////////////////////////////////////
+OBSERVATIONS:
+
+C Standard library's malloc and free:
+
+The memory usage of a program can vary depending on how memory is allocated and managed within the program. Dynamic memory allocation, such as calls to malloc() or new, may result in different memory usage patterns each time the program runs.
+
+---
+it's normal for memory usage to vary between runs of the same program. There are several reasons for this variability:
+
+1) System Load: The memory usage of a program can be influenced by the overall system load. If there are many other processes running on the system, the available memory may change, affecting how much memory your program can allocate.
+2) Memory Allocation: The memory usage of a program can vary depending on how memory is allocated and managed within the program. Dynamic memory allocation, such as calls to malloc() or new, may result in different memory usage patterns each time the program runs.
+3) External Factors: External factors, such as background processes, system services, and device drivers, can also impact memory usage. These factors may change between runs of the program, leading to differences in memory usage.
+4) Memory Fragmentation: Memory fragmentation can occur over time as memory is allocated and deallocated within the program. This can result in variations in memory usage between runs, especially if the program relies heavily on dynamic memory allocation.
