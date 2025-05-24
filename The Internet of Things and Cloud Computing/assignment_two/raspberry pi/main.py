@@ -56,7 +56,6 @@ def serial_read_loop():
             line = ser.readline().decode('utf-8', errors = 'replace').strip()
             if line:
                 aws_db.put_to_dynamo(DEVICE_ID, line)
-            time.sleep(0.1)
     except Exception as e:
         print("Arduino reading error:", e)
 
@@ -78,13 +77,10 @@ def main():
     ser = serial.Serial(PORT, BAUD_RATE, timeout = 2)
     time.sleep(2)
 
-    serial_thread = threading.Thread(target = serial_read_loop, daemon = True)
-    serial_thread.start()
-
     try:
         print("Ready")
         while True:
-            time.sleep(1)
+            serial_read_loop()
     except KeyboardInterrupt:
         print("Finish...")
     finally:
@@ -96,4 +92,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
