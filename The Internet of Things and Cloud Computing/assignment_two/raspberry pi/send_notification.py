@@ -8,9 +8,9 @@ def send_email(timestamp, device_id, soilmoisture):
     contents = f"""\
     Low soil moisture alert!
 
-    📅 Time: {timestamp}  
-    🔌 Device ID: {device_id}  
-    💧 Soil Moisture: {soilmoisture}
+     Time: {timestamp}  
+     Device ID: {device_id}  
+     Soil Moisture: {soilmoisture}
 
     Please take action to water the soil if necessary.
 
