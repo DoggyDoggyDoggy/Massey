@@ -15,7 +15,7 @@ def put_to_dynamo(device_id, soilmoisture):
             'soilmoisture': soilmoisture
         })
         print(f"[+] Uploaded: {device_id} - {soilmoisture} at {timestamp}")
-        if soilmoisture < 150:
+        if int(soilmoisture) < 150:
             send_notification.send_email(datetime.now().strftime("%d/%m/%Y at %H:%M"), device_id, soilmoisture)
             print("Email sent")
     except Exception as e:
