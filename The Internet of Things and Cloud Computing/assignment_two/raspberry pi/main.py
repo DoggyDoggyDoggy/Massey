@@ -1,6 +1,5 @@
 import time
 import serial
-import threading
 import aws_db
 
 from awscrt import io, mqtt

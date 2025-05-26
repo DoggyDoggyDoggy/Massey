@@ -1,6 +1,5 @@
 import yagmail
 import gmail_acc
-from datetime import datetime, timezone
 
 def send_email(timestamp, device_id, soilmoisture):
     yag = yagmail.SMTP(gmail_acc.gmail_email, gmail_acc.gmail_pas)
