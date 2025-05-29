@@ -1,3 +1,7 @@
+//Denys Pedan
+//ID: 23011350
+//Date: 29/05/2025
+
 #include "buddysys.h"
 #include <cmath>
 #include <vector>

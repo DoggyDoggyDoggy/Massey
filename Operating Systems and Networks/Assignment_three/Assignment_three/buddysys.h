@@ -4,7 +4,7 @@
 //                  
 //   Description:  Buddy System Algorithm
 //                  
-//   Student name:
+//   Student name: Denys Pedan
 //
 //
 //////////////////////////////////////////////////////////////////////////////////

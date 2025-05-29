@@ -12,7 +12,7 @@
 //
 // Submitted by: 
 //
-//      Student name(s), ID number:
+//      Student name(s), ID number: Denys Pedan 23011350
 //
 //
 //
@@ -56,23 +56,23 @@ long long int MEMORYSIZE;
 //---------------------------------------
 //(1) use built-in C functions
 // change the following lines to test the real malloc and free
-const string strategy = "malloc"; //enable this to test the system MALLOC & FREE
-#define MALLOC malloc //enable this to test the system MALLOC & FREE
-#define FREE free //enable this to test the system MALLOC & FREE
-
+//const string strategy = "malloc"; //enable this to test the system MALLOC & FREE
+//#define MALLOC malloc //enable this to test the system MALLOC & FREE
+//#define FREE free //enable this to test the system MALLOC & FREE
+//
 //---------------------------------------
 //(2) use user-defined functions
-// const string strategy = "mymalloc";
-// #define MALLOC mymalloc
-// #define FREE myfree
+//const string strategy = "mymalloc";
+//#define MALLOC mymalloc
+//#define FREE myfree
 
 //---------------------------------------
 //Enable the following compiler directives to test your implementation of buddy system strategy
 //(3) use Buddy System
-// const string strategy = "Buddy System"; //enable this to test the Buddy System
-// #define USE_BUDDY_SYSTEM  //enable this to test the Buddy System
-// #define MALLOC buddyMalloc //enable this to test the Buddy System
-// #define FREE buddyFree //enable this to test the Buddy System
+const string strategy = "Buddy System"; //enable this to test the Buddy System
+#define USE_BUDDY_SYSTEM  //enable this to test the Buddy System
+#define MALLOC buddyMalloc //enable this to test the Buddy System
+#define FREE buddyFree //enable this to test the Buddy System
 //---------------------------------------
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
